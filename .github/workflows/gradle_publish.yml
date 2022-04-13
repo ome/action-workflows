@@ -3,12 +3,13 @@ name: Gradle_Publish
 
 on:
   workflow_call:
+    inputs:
+      ARTIFACTORY_URL:
+        type: string
     secrets:
       ARTIFACTORY_USER:
         required: true
       ARTIFACTORY_PASSWORD:
-        required: true
-      ARTIFACTORY_URL:
         required: true
 
 
@@ -40,9 +41,13 @@ jobs:
       - name: Wrap without version
         run: gradle wrapper
         if: ${{ env.gradle_version == '' }}
+      - name: Set ARTIFACTORY_URL
+        run:
+          VAR=${{ inputs.ARTIFACTORY_URL }}
+          echo "ARTIFACTORY_URL="${VAR:-https://artifacts.openmicroscopy.org/artifactory/ome.snapshots} >> $GITHUB_ENV
       - name: Run commands
         run: ./gradlew ${{ env.gradle_commands }}
         env:
           ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
           ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
-          ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
+          ARTIFACTORY_URL: $ARTIFACTORY_URL
