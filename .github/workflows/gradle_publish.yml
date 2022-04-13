@@ -43,15 +43,15 @@ jobs:
         run: gradle wrapper
         if: ${{ env.gradle_version == '' }}
       - name: Set ARTIFACTORY_URL
-        run:
+        run: |
           VAR=${{ inputs.ARTIFACTORY_URL }}
           if [ "$VAR" = "staging" ]; then
-              echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.staging"} >> $GITHUB_ENV
+            echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.staging" >> $GITHUB_ENV
           else
-              echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.snapshots"} >> $GITHUB_ENV
+            echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.snapshots" >> $GITHUB_ENV
+          fi
       - name: Run commands
         run: ./gradlew ${{ env.gradle_commands }}
         env:
           ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
           ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
-          ARTIFACTORY_URL: $ARTIFACTORY_URL
