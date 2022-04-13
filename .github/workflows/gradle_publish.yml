@@ -5,7 +5,8 @@ on:
   workflow_call:
     inputs:
       ARTIFACTORY_URL:
-        type: string
+        required: true
+        type: string  # staging/snapshop
     secrets:
       ARTIFACTORY_USER:
         required: true
@@ -44,7 +45,11 @@ jobs:
       - name: Set ARTIFACTORY_URL
         run:
           VAR=${{ inputs.ARTIFACTORY_URL }}
-          echo "ARTIFACTORY_URL="${VAR:-https://artifacts.openmicroscopy.org/artifactory/ome.snapshots} >> $GITHUB_ENV
+          if [ "$VAR" = "staging" ]; then
+              echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.staging"} >> $GITHUB_ENV
+          else
+              echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.snapshots"} >> $GITHUB_ENV
+
       - name: Run commands
         run: ./gradlew ${{ env.gradle_commands }}
         env:
