@@ -6,7 +6,7 @@ on:
     inputs:
       ARTIFACTORY_URL:
         required: true
-        type: string  # staging/snapshop
+        type: string  # staging/snapshots
     secrets:
       ARTIFACTORY_USER:
         required: true
@@ -49,7 +49,6 @@ jobs:
               echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.staging"} >> $GITHUB_ENV
           else
               echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.snapshots"} >> $GITHUB_ENV
-
       - name: Run commands
         run: ./gradlew ${{ env.gradle_commands }}
         env:
