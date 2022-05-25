@@ -6,7 +6,7 @@ on:
     inputs:
       ARTIFACTORY_URL:
         required: true
-        type: string  # staging/snapshots
+        type: string  # staging/snapshots/releases
     secrets:
       ARTIFACTORY_USER:
         required: true
@@ -47,6 +47,8 @@ jobs:
           VAR=${{ inputs.ARTIFACTORY_URL }}
           if [ "$VAR" = "staging" ]; then
             echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.staging" >> $GITHUB_ENV
+          elif [ "$VAR" = "releases" ]; then
+            echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.releases" >> $GITHUB_ENV
           else
             echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.snapshots" >> $GITHUB_ENV
           fi
