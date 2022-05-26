@@ -20,6 +20,6 @@ jobs:
         uses: jburel/action-gradle@v1
         with:
           java-version: ${{ matrix.java }}
-          gradle-version: {{ env.gradle_version }}
+          gradle-version: ${{ env.gradle_version }}
       - name: Run commands
         run: ./gradlew ${{ env.gradle_commands }}
