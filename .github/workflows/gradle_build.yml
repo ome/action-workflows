@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set up environment
-        uses: jburel/action-gradle@v1
+        uses: ome/action-gradle@v1
         with:
           java-version: ${{ matrix.java }}
           gradle-version: ${{ env.gradle_version }}
