@@ -7,6 +7,18 @@ on:
       ARTIFACTORY_URL:
         required: true
         type: string  # staging/snapshots/releases
+      gradle-version:
+        required: false
+        type: string
+        default: 6.8.3 # set to empty to build with most recent version of gradle
+      gradle-commands:
+        required: false
+        type: string
+        default: publish
+      java-version:
+        type: string
+        required: false
+        default: 1.8
     secrets:
       ARTIFACTORY_USER:
         required: true
@@ -18,19 +30,15 @@ jobs:
   build:
     strategy:
       matrix:
-        java: [1.8]
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
-    env:
-      gradle_version: 6.8.3 # set to empty to build with most recent version of gradle
-      gradle_commands: publish # default is build
     steps:
       - uses: actions/checkout@v2
       - name: Set up environment
         uses: ome/action-gradle@v1
         with:
-          java-version: ${{ matrix.java }}
-          gradle-version: ${{ env.gradle_version }}
+          java-version: ${{ inputs.java-version }}
+          gradle-version: ${{ inputs.gradle-version }}
       - name: Set ARTIFACTORY_URL
         run: |
           VAR=${{ inputs.ARTIFACTORY_URL }}
@@ -42,7 +50,7 @@ jobs:
             echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.snapshots" >> $GITHUB_ENV
           fi
       - name: Run commands
-        run: ./gradlew ${{ env.gradle_commands }}
+        run: ./gradlew ${{ inputs.gradle-commands }}
         env:
           ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
           ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}

@@ -3,6 +3,16 @@ name: Gradle_Build
 
 on:
   workflow_call:
+    inputs:
+      gradle-version:
+        required: false
+        default: 6.8.3
+        type: string
+      gradle-commands:
+        required: false
+        default: build
+        type: string
+
 
 jobs:
   build:
@@ -11,15 +21,12 @@ jobs:
         java: [1.8, 11]
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    env:
-      gradle_version: 6.8.3 # set to empty to build with most recent version of gradle
-      gradle_commands: build # default is build
     steps:
       - uses: actions/checkout@v2
       - name: Set up environment
         uses: ome/action-gradle@v1
         with:
           java-version: ${{ matrix.java }}
-          gradle-version: ${{ env.gradle_version }}
+          gradle-version: ${{ inputs.gradle-version }}
       - name: Run commands
-        run: ./gradlew ${{ env.gradle_commands }}
+        run: ./gradlew ${{ inputs.gradle-commands }}
