@@ -19,6 +19,10 @@ on:
         type: string
         required: false
         default: 1.8
+      install-ice:
+        required: false
+        default: false
+        type: string
     secrets:
       ARTIFACTORY_USER:
         required: true
@@ -32,8 +36,13 @@ jobs:
       matrix:
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
+    env:
+      ICE_HOME: /opt/ice-3.6.5
     steps:
       - uses: actions/checkout@v2
+      - name: Install Ice and Ice python binding
+        uses: ome/action-ice@v1
+        if: ${{ inputs.install-ice == 'true' }}
       - name: Set up environment
         uses: ome/action-gradle@v1
         with:
