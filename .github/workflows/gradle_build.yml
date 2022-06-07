@@ -12,6 +12,10 @@ on:
         required: false
         default: build
         type: string
+      install-ice:
+        required: false
+        default: false
+        type: string
 
 
 jobs:
@@ -21,12 +25,19 @@ jobs:
         java: [1.8, 11]
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
+    env:
+      ICE_HOME: /opt/ice-3.6.5
     steps:
       - uses: actions/checkout@v2
+      - name: Install Ice and Ice python binding
+        uses: ome/action-ice@v1
+        if: ${{ inputs.install-ice == 'true' && startsWith(matrix.os, 'ubuntu-latest') }}
       - name: Set up environment
         uses: ome/action-gradle@v1
         with:
           java-version: ${{ matrix.java }}
           gradle-version: ${{ inputs.gradle-version }}
+        if: ${{ inputs.install-ice == 'true' && startsWith(matrix.os, 'ubuntu-latest') }}
       - name: Run commands
         run: ./gradlew ${{ inputs.gradle-commands }}
+        if: ${{ inputs.install-ice == 'true' && startsWith(matrix.os, 'ubuntu-latest') }}
