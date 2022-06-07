@@ -37,7 +37,13 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           gradle-version: ${{ inputs.gradle-version }}
-        if: ${{ inputs.install-ice == 'true' && startsWith(matrix.os, 'ubuntu-latest') }}
+        if: |
+          (startsWith(matrix.os, 'ubuntu-latest')) ||
+          (inputs.install-ice == 'false' && startsWith(matrix.os, 'windows-latest')) ||
+          (inputs.install-ice == 'false' && startsWith(matrix.os, 'macos-latest'))
       - name: Run commands
         run: ./gradlew ${{ inputs.gradle-commands }}
-        if: ${{ inputs.install-ice == 'true' && startsWith(matrix.os, 'ubuntu-latest') }}
+        if: |
+          (startsWith(matrix.os, 'ubuntu-latest')) ||
+          (inputs.install-ice == 'false' && startsWith(matrix.os, 'windows-latest')) ||
+          (inputs.install-ice == 'false' && startsWith(matrix.os, 'macos-latest'))
