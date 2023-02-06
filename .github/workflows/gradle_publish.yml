@@ -39,7 +39,7 @@ jobs:
     env:
       ICE_HOME: /opt/ice-3.6.5
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install Ice and Ice python binding
         uses: ome/action-ice@v1
         if: ${{ inputs.install-ice == 'true' }}
