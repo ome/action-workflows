@@ -18,7 +18,7 @@ on:
       java-version:
         type: string
         required: false
-        default: 1.8
+        default: 8
       install-ice:
         required: false
         default: false
@@ -44,7 +44,7 @@ jobs:
         uses: ome/action-ice@v1
         if: ${{ inputs.install-ice == 'true' }}
       - name: Set up environment
-        uses: ome/action-gradle@v1
+        uses: ome/action-gradle@v2
         with:
           java-version: ${{ inputs.java-version }}
           gradle-version: ${{ inputs.gradle-version }}
