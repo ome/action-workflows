@@ -22,7 +22,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java: [1.8, 11]
+        java: [8, 11]
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     env:
@@ -33,7 +33,7 @@ jobs:
         uses: ome/action-ice@v1
         if: ${{ inputs.install-ice == 'true' && startsWith(matrix.os, 'ubuntu-latest') }}
       - name: Set up environment
-        uses: ome/action-gradle@v1
+        uses: ome/action-gradle@v2
         with:
           java-version: ${{ matrix.java }}
           gradle-version: ${{ inputs.gradle-version }}
