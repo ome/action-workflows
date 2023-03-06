@@ -59,7 +59,7 @@ jobs:
             echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.snapshots" >> $GITHUB_ENV
           fi
       - name: Run commands
-        run: ./gradlew ${{ inputs.gradle-commands }}
+        run: gradle ${{ inputs.gradle-commands }}
         env:
           ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
           ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
