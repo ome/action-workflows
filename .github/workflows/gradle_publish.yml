@@ -18,7 +18,7 @@ on:
       java-version:
         type: string
         required: false
-        default: 1.8
+        default: 8
       install-ice:
         required: false
         default: false
@@ -39,12 +39,12 @@ jobs:
     env:
       ICE_HOME: /opt/ice-3.6.5
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install Ice and Ice python binding
         uses: ome/action-ice@v1
         if: ${{ inputs.install-ice == 'true' }}
       - name: Set up environment
-        uses: ome/action-gradle@v1
+        uses: ome/action-gradle@v3.2
         with:
           java-version: ${{ inputs.java-version }}
           gradle-version: ${{ inputs.gradle-version }}
@@ -59,7 +59,7 @@ jobs:
             echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.snapshots" >> $GITHUB_ENV
           fi
       - name: Run commands
-        run: ./gradlew ${{ inputs.gradle-commands }}
+        run: gradle ${{ inputs.gradle-commands }}
         env:
           ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
           ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}

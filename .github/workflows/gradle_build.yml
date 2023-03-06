@@ -22,18 +22,18 @@ jobs:
   build:
     strategy:
       matrix:
-        java: [1.8, 11]
+        java: [8, 11]
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     env:
       ICE_HOME: /opt/ice-3.6.5
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install Ice and Ice python binding
         uses: ome/action-ice@v1
         if: ${{ inputs.install-ice == 'true' && startsWith(matrix.os, 'ubuntu-latest') }}
       - name: Set up environment
-        uses: ome/action-gradle@v1
+        uses: ome/action-gradle@v3.2
         with:
           java-version: ${{ matrix.java }}
           gradle-version: ${{ inputs.gradle-version }}
@@ -41,7 +41,7 @@ jobs:
           (startsWith(matrix.os, 'ubuntu-latest')) ||
           (inputs.install-ice == 'false')
       - name: Run commands
-        run: ./gradlew ${{ inputs.gradle-commands }}
+        run: gradle ${{ inputs.gradle-commands }}
         if: |
           (startsWith(matrix.os, 'ubuntu-latest')) ||
           (inputs.install-ice == 'false')
