@@ -44,7 +44,7 @@ jobs:
         uses: ome/action-ice@v1
         if: ${{ inputs.install-ice == 'true' }}
       - name: Set up environment
-        uses: ome/action-gradle@v2
+        uses: ome/action-gradle@v3
         with:
           java-version: ${{ inputs.java-version }}
           gradle-version: ${{ inputs.gradle-version }}

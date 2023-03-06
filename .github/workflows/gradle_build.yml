@@ -33,7 +33,7 @@ jobs:
         uses: ome/action-ice@v1
         if: ${{ inputs.install-ice == 'true' && startsWith(matrix.os, 'ubuntu-latest') }}
       - name: Set up environment
-        uses: ome/action-gradle@v2
+        uses: ome/action-gradle@v3
         with:
           java-version: ${{ matrix.java }}
           gradle-version: ${{ inputs.gradle-version }}
