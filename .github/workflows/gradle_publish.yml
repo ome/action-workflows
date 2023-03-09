@@ -41,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install Ice and Ice python binding
-        uses: ome/action-ice@v1
+        uses: ome/action-ice@v2.1
         if: ${{ inputs.install-ice == 'true' }}
       - name: Set up environment
         uses: ome/action-gradle@v3.2
