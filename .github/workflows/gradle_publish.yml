@@ -18,7 +18,7 @@ on:
       java-version:
         type: string
         required: false
-        default: 8
+        default: 11
       install-ice:
         required: false
         default: false
