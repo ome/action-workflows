@@ -34,14 +34,14 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-22.04]
     runs-on: ${{ matrix.os }}
     env:
       ICE_HOME: /opt/ice-3.6.5
     steps:
       - uses: actions/checkout@v4
       - name: Install Ice and Ice python binding
-        uses: ome/action-ice@v4.1
+        uses: ome/action-ice@main
         if: ${{ inputs.install-ice == 'true' }}
       - name: Set up environment
         uses: ome/action-gradle@v3.5
