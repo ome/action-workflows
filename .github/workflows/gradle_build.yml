@@ -31,17 +31,17 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install Ice and Ice python binding
         uses: jburel/action-ice@update
-        if: ${{ inputs.install-ice == 'true' && startsWith(matrix.os, 'ubuntu-latest') }}
+        if: ${{ inputs.install-ice == 'true' && startsWith(matrix.os, 'ubuntu') }}
       - name: Set up environment
         uses: ome/action-gradle@v3.5
         with:
           java-version: ${{ matrix.java }}
           gradle-version: ${{ inputs.gradle-version }}
         if: |
-          (startsWith(matrix.os, 'ubuntu-latest')) ||
+          (startsWith(matrix.os, 'ubuntu')) ||
           (inputs.install-ice == 'false')
       - name: Run commands
         run: gradle ${{ inputs.gradle-commands }}
         if: |
-          (startsWith(matrix.os, 'ubuntu-latest')) ||
+          (startsWith(matrix.os, 'ubuntu')) ||
           (inputs.install-ice == 'false')
