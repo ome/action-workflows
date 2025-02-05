@@ -34,7 +34,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-22.04]
     runs-on: ${{ matrix.os }}
     env:
       ICE_HOME: /opt/ice-3.6.5
