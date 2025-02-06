@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         java: [11]
-        os: [ubuntu-22.04, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     env:
       ICE_HOME: /opt/ice-3.6.5
