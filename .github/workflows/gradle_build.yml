@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Ice and Ice python binding
-        uses: jburel/action-ice@ubuntu24.04
+        uses: ome/action-ice@main
         if: ${{ inputs.install-ice == 'true' && startsWith(matrix.os, 'ubuntu') }}
       - name: Set up environment
         uses: ome/action-gradle@v3.5
