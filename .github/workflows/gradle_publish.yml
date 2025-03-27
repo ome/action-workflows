@@ -48,6 +48,33 @@ jobs:
         with:
           java-version: ${{ inputs.java-version }}
           gradle-version: ${{ inputs.gradle-version }}
+      - name: Extract version
+        id: extract_version
+        run: |
+          echo "build_version=$(gradle properties -q | grep "version:" | awk '{print $2}')" >> $GITHUB_OUTPUT
+      - name: Check status
+        id: check_status
+        run: |
+          version=${{ steps.extract_version.outputs.build_version }}
+          echo $version
+          VAR=${{ inputs.ARTIFACTORY_URL }}
+          status=success
+          if [[ "$VAR" = "releases" ]] ; then
+            if [[ $version == *SNAPSHOT* ]]; then
+                status=failure
+                echo "status=$status" >> $GITHUB_OUTPUT
+            fi
+          else
+            if [[ $version != *SNAPSHOT* ]] then
+              status=failure
+              echo "status=$status" >> $GITHUB_OUTPUT
+            fi
+          fi
+          echo $status
+          if [ "$status" = "failure" ] ; then
+            echo "The version ${version} does not match the ARTIFACTORY_URL ${VAR}"
+            exit 1
+          fi
       - name: Set ARTIFACTORY_URL
         run: |
           VAR=${{ inputs.ARTIFACTORY_URL }}
