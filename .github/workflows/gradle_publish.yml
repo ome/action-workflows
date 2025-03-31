@@ -68,7 +68,6 @@ jobs:
               status=failure
             fi
           fi
-          echo $status
           if [ "$status" = "failure" ] ; then
             echo "The version ${version} does not match the ARTIFACTORY_URL ${VAR}"
             exit 1
