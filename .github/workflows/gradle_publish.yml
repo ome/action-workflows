@@ -48,39 +48,30 @@ jobs:
         with:
           java-version: ${{ inputs.java-version }}
           gradle-version: ${{ inputs.gradle-version }}
-      - name: Extract version
-        id: extract_version
+      - name: Set ARTIFACTORY_URL
         run: |
-          echo "build_version=$(gradle properties -q | grep "version:" | awk '{print $2}')" >> $GITHUB_OUTPUT
-      - name: Check status
-        id: check_status
-        run: |
-          version=${{ steps.extract_version.outputs.build_version }}
-          echo $version
           VAR=${{ inputs.ARTIFACTORY_URL }}
+          version=$(gradle properties -q | grep "version:" | awk '{print $2}')
           status=success
-          if [[ "$VAR" = "releases" ]] ; then
+          if [ "$VAR" = "staging" ]; then
             if [[ $version == *SNAPSHOT* ]]; then
                 status=failure
             fi
+            echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.staging" >> $GITHUB_ENV
+          elif [ "$VAR" = "releases" ]; then
+            if [[ $version == *SNAPSHOT* ]]; then
+                status=failure
+            fi
+            echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.releases" >> $GITHUB_ENV
           else
             if [[ $version != *SNAPSHOT* ]] then
               status=failure
             fi
+            echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.snapshots" >> $GITHUB_ENV
           fi
           if [ "$status" = "failure" ] ; then
             echo "The version ${version} does not match the ARTIFACTORY_URL ${VAR}"
             exit 1
-          fi
-      - name: Set ARTIFACTORY_URL
-        run: |
-          VAR=${{ inputs.ARTIFACTORY_URL }}
-          if [ "$VAR" = "staging" ]; then
-            echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.staging" >> $GITHUB_ENV
-          elif [ "$VAR" = "releases" ]; then
-            echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.releases" >> $GITHUB_ENV
-          else
-            echo "ARTIFACTORY_URL=https://artifacts.openmicroscopy.org/artifactory/ome.snapshots" >> $GITHUB_ENV
           fi
       - name: Run commands
         run: gradle ${{ inputs.gradle-commands }}
